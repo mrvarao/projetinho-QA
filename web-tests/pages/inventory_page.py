@@ -29,8 +29,13 @@ class InventoryPage:
         wait.until(EC.presence_of_element_located(remove_locator))
 
     def go_to_cart(self):
-        self.driver.get("https://www.saucedemo.com/cart.html")
-        WebDriverWait(self.driver, 15).until(EC.url_contains("cart.html"))
+        wait = WebDriverWait(self.driver, 20)
+        link = wait.until(EC.presence_of_element_located(self.CART_LINK))
+        self.driver.execute_script(
+            "arguments[0].scrollIntoView({block: 'center'}); arguments[0].click();",
+            link,
+        )
+        wait.until(EC.url_contains("cart.html"))
 
     def get_item_names(self):
         return [el.text for el in self.driver.find_elements(*self.ITEM_NAMES)]
