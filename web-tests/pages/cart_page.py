@@ -11,11 +11,12 @@ class CartPage:
         self.driver = driver
 
     def get_cart_items(self):
-        WebDriverWait(self.driver, 10).until(
+        WebDriverWait(self.driver, 15).until(
             EC.presence_of_all_elements_located(self.CART_ITEMS)
         )
         return [el.text for el in self.driver.find_elements(*self.CART_ITEMS)]
 
     def proceed_to_checkout(self):
-        self.driver.find_element(*self.CHECKOUT_BUTTON).click()
-        WebDriverWait(self.driver, 15).until(EC.url_contains("checkout-step-one"))
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(self.CHECKOUT_BUTTON)).click()
+        wait.until(EC.url_contains("checkout-step-one"))

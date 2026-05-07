@@ -1,4 +1,6 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 
 class LoginPage:
@@ -13,6 +15,9 @@ class LoginPage:
 
     def open(self):
         self.driver.get(self.URL)
+        WebDriverWait(self.driver, 15).until(
+            EC.visibility_of_element_located(self.USERNAME_INPUT)
+        )
 
     def fill_username(self, username):
         field = self.driver.find_element(*self.USERNAME_INPUT)
@@ -31,3 +36,4 @@ class LoginPage:
         self.fill_username(username)
         self.fill_password(password)
         self.submit()
+        WebDriverWait(self.driver, 15).until(EC.url_contains("/inventory"))
