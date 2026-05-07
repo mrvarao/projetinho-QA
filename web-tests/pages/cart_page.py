@@ -11,6 +11,9 @@ class CartPage:
         self.driver = driver
 
     def get_cart_items(self):
+        WebDriverWait(self.driver, 10).until(
+            EC.presence_of_all_elements_located(self.CART_ITEMS)
+        )
         return [el.text for el in self.driver.find_elements(*self.CART_ITEMS)]
 
     def proceed_to_checkout(self):
