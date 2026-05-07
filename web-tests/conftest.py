@@ -17,7 +17,7 @@ def driver():
     options.add_argument("--window-size=1920,1080")
 
     driver = webdriver.Chrome(options=options)
-    driver.implicitly_wait(5)
+    driver.implicitly_wait(10)
 
     yield driver
 

@@ -1,4 +1,6 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 
 class CartPage:
@@ -13,3 +15,4 @@ class CartPage:
 
     def proceed_to_checkout(self):
         self.driver.find_element(*self.CHECKOUT_BUTTON).click()
+        WebDriverWait(self.driver, 15).until(EC.url_contains("checkout-step-one"))
