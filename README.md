@@ -1,5 +1,7 @@
 # QA Automation — API + Web
 
+[![CI](https://github.com/mrvarao/projetinho-QA/actions/workflows/ci.yml/badge.svg)](https://github.com/mrvarao/projetinho-QA/actions/workflows/ci.yml)
+
 Projeto de automação de testes cobrindo API REST (Swagger Petstore) e fluxo E2E web (SauceDemo), com pipeline de CI no GitHub Actions.
 
 ## Tecnologias

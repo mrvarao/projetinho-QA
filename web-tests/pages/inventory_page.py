@@ -34,3 +34,7 @@ class InventoryPage:
 
     def get_item_names(self):
         return [el.text for el in self.driver.find_elements(*self.ITEM_NAMES)]
+
+    def get_cart_badge_count(self):
+        badges = self.driver.find_elements(*self.CART_BADGE)
+        return int(badges[0].text) if badges else 0
