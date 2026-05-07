@@ -1,4 +1,3 @@
-from selenium.common.exceptions import ElementClickInterceptedException, WebDriverException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -19,13 +18,10 @@ class CartPage:
 
     def proceed_to_checkout(self):
         wait = WebDriverWait(self.driver, 20)
-        button = wait.until(EC.presence_of_element_located(self.CHECKOUT_BUTTON))
+        wait.until(EC.presence_of_element_located(self.CHECKOUT_BUTTON))
         self.driver.execute_script(
-            "arguments[0].scrollIntoView({block: 'center'});", button
+            "var el = document.getElementById('checkout');"
+            "el.scrollIntoView({block: 'center'});"
+            "el.click();"
         )
-        wait.until(EC.element_to_be_clickable(self.CHECKOUT_BUTTON))
-        try:
-            button.click()
-        except (ElementClickInterceptedException, WebDriverException):
-            self.driver.execute_script("arguments[0].click();", button)
         wait.until(EC.url_contains("checkout-step-one"))

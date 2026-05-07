@@ -1,4 +1,3 @@
-from selenium.common.exceptions import ElementClickInterceptedException, WebDriverException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -15,17 +14,16 @@ class CheckoutPage:
     def __init__(self, driver):
         self.driver = driver
 
-    def _click(self, locator):
-        wait = WebDriverWait(self.driver, 20)
-        button = wait.until(EC.presence_of_element_located(locator))
-        self.driver.execute_script(
-            "arguments[0].scrollIntoView({block: 'center'});", button
+    def _js_click(self, element_id):
+        WebDriverWait(self.driver, 20).until(
+            EC.presence_of_element_located((By.ID, element_id))
         )
-        wait.until(EC.element_to_be_clickable(locator))
-        try:
-            button.click()
-        except (ElementClickInterceptedException, WebDriverException):
-            self.driver.execute_script("arguments[0].click();", button)
+        self.driver.execute_script(
+            "var el = document.getElementById(arguments[0]);"
+            "el.scrollIntoView({block: 'center'});"
+            "el.click();",
+            element_id,
+        )
 
     def fill_info(self, first_name, last_name, zip_code):
         wait = WebDriverWait(self.driver, 20)
@@ -35,11 +33,11 @@ class CheckoutPage:
         self.driver.find_element(*self.ZIP_CODE_INPUT).send_keys(zip_code)
 
     def continue_checkout(self):
-        self._click(self.CONTINUE_BUTTON)
+        self._js_click("continue")
         WebDriverWait(self.driver, 20).until(EC.url_contains("checkout-step-two"))
 
     def finish_checkout(self):
-        self._click(self.FINISH_BUTTON)
+        self._js_click("finish")
         WebDriverWait(self.driver, 20).until(EC.url_contains("checkout-complete"))
 
     def get_confirmation_message(self):
