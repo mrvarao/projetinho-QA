@@ -1,4 +1,3 @@
-from selenium.common.exceptions import ElementClickInterceptedException, WebDriverException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -15,20 +14,18 @@ class InventoryPage:
 
     def add_item_to_cart(self, item_name):
         slug = item_name.lower().replace(" ", "-")
-        add_locator = (By.ID, f"add-to-cart-{slug}")
+        add_id = f"add-to-cart-{slug}"
         remove_locator = (By.ID, f"remove-{slug}")
 
         wait = WebDriverWait(self.driver, 20)
         wait.until(EC.presence_of_element_located(self.INVENTORY_CONTAINER))
-        button = wait.until(EC.presence_of_element_located(add_locator))
+        wait.until(EC.presence_of_element_located((By.ID, add_id)))
         self.driver.execute_script(
-            "arguments[0].scrollIntoView({block: 'center'});", button
+            "var el = document.getElementById(arguments[0]);"
+            "el.scrollIntoView({block: 'center'});"
+            "el.click();",
+            add_id,
         )
-        wait.until(EC.element_to_be_clickable(add_locator))
-        try:
-            button.click()
-        except (ElementClickInterceptedException, WebDriverException):
-            self.driver.execute_script("arguments[0].click();", button)
         wait.until(EC.presence_of_element_located(remove_locator))
 
     def go_to_cart(self):
