@@ -25,12 +25,26 @@ class CheckoutPage:
             element_id,
         )
 
+    def _set_value(self, element_id, value):
+        self.driver.execute_script(
+            "var el = document.getElementById(arguments[0]);"
+            "var setter = Object.getOwnPropertyDescriptor("
+            "  window.HTMLInputElement.prototype, 'value'"
+            ").set;"
+            "setter.call(el, arguments[1]);"
+            "el.dispatchEvent(new Event('input', { bubbles: true }));"
+            "el.dispatchEvent(new Event('change', { bubbles: true }));",
+            element_id,
+            value,
+        )
+
     def fill_info(self, first_name, last_name, zip_code):
-        wait = WebDriverWait(self.driver, 20)
-        first = wait.until(EC.visibility_of_element_located(self.FIRST_NAME_INPUT))
-        first.send_keys(first_name)
-        self.driver.find_element(*self.LAST_NAME_INPUT).send_keys(last_name)
-        self.driver.find_element(*self.ZIP_CODE_INPUT).send_keys(zip_code)
+        WebDriverWait(self.driver, 20).until(
+            EC.visibility_of_element_located(self.FIRST_NAME_INPUT)
+        )
+        self._set_value("first-name", first_name)
+        self._set_value("last-name", last_name)
+        self._set_value("postal-code", zip_code)
 
     def continue_checkout(self):
         self._js_click("continue")
