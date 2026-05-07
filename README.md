@@ -73,4 +73,14 @@ Pipeline definida em `.github/workflows/ci.yml` com dois jobs paralelos (`api-te
 
 ## Prints
 
-<!-- adicionar prints aqui -->
+### Pipeline do GitHub Actions (verde)
+
+![CI run](prints/ci-run-success.png)
+
+### Relatório HTML — API (18 testes)
+
+![API report](prints/api-report.png)
+
+### Relatório HTML — Web (E2E SauceDemo)
+
+![Web report](prints/web-report.png)
